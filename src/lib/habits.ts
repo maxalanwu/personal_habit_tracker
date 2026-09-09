@@ -9,7 +9,7 @@ export interface Habit {
   completions: string[];
 }
 
-const STORAGE_KEY = 'habit-tracker:habits:v1';
+export const STORAGE_KEY = 'habit-tracker:habits:v1';
 
 export function loadHabits(): Habit[] {
   try {
@@ -18,7 +18,8 @@ export function loadHabits(): Habit[] {
     const parsed = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
     return parsed.filter(isHabit);
-  } catch {
+  } catch (err) {
+    console.warn('[habits] could not read from localStorage:', err);
     return [];
   }
 }
@@ -26,8 +27,9 @@ export function loadHabits(): Habit[] {
 export function saveHabits(habits: Habit[]): void {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(habits));
-  } catch {
-    // Storage full or unavailable (private mode) — nothing we can do here.
+  } catch (err) {
+    // Storage full, or unavailable (private mode / file:// origin).
+    console.warn('[habits] could not write to localStorage:', err);
   }
 }
 
