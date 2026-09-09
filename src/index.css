@@ -47,8 +47,18 @@
   box-sizing: border-box;
 }
 
+button {
+  font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 body {
   margin: 0;
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
   color: var(--text);
   background: var(--bg);
   background-image: linear-gradient(180deg, var(--bg-tint-b) 0%, var(--bg) 60%),
@@ -66,7 +76,7 @@ body {
 .app {
   max-width: 580px;
   margin: 0 auto;
-  padding: 56px 22px 100px;
+  padding: 56px 22px calc(100px + env(safe-area-inset-bottom));
 }
 
 /* ---- Header ---- */
@@ -490,10 +500,10 @@ body {
 
 .habit-remove {
   flex-shrink: 0;
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
   border: none;
-  border-radius: 9px;
+  border-radius: 10px;
   background: transparent;
   color: var(--text-soft);
   font-size: 13px;
@@ -512,12 +522,21 @@ body {
   color: var(--text);
 }
 
+/* Touch devices can't hover — keep delete reachable */
+@media (hover: none) {
+  .habit-remove {
+    width: 40px;
+    height: 40px;
+    opacity: 0.5;
+  }
+}
+
 /* ---- The satisfying check ---- */
 .habit-check {
   position: relative;
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border: 2.5px solid var(--border);
   border-radius: 50%;
   background: transparent;
@@ -768,6 +787,78 @@ body {
 
 .empty-state .add-trigger {
   margin-bottom: 0;
+}
+
+/* ---- Mobile (primary target) ---- */
+@media (max-width: 480px) {
+  .app {
+    padding: 40px 16px calc(88px + env(safe-area-inset-bottom));
+  }
+
+  .app-header {
+    margin-bottom: 26px;
+  }
+
+  .app-title {
+    font-size: 32px;
+  }
+
+  .view-toggle-btn {
+    padding: 13px 12px;
+    font-size: 15px;
+  }
+
+  .habit-card {
+    gap: 12px;
+    padding: 16px 16px;
+  }
+
+  .habit-emoji {
+    font-size: 36px;
+    width: 44px;
+  }
+
+  .habit-card::after {
+    right: 52px;
+  }
+
+  .habit-name {
+    font-size: 16px;
+  }
+
+  /* Compact the week grid so it fits without sideways scrolling */
+  .weekly-grid {
+    padding: 16px 14px;
+  }
+
+  .grid-row {
+    grid-template-columns: minmax(64px, 1fr) repeat(7, 1fr);
+    gap: 6px;
+  }
+
+  .grid-label {
+    gap: 6px;
+    font-size: 12.5px;
+  }
+
+  .grid-label-emoji {
+    font-size: 17px;
+  }
+
+  .grid-cell {
+    width: 100%;
+    height: 30px;
+    min-width: 0;
+  }
+
+  .modal {
+    padding: 20px;
+  }
+
+  .emoji-choice {
+    width: 44px;
+    height: 44px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
