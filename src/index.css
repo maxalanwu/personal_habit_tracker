@@ -441,30 +441,6 @@ body {
     0 10px 26px rgba(18, 178, 107, 0.16);
 }
 
-/* Faint checkmark watermark that fades in when done */
-.habit-card::after {
-  content: '';
-  position: absolute;
-  right: 60px;
-  top: 50%;
-  width: 34px;
-  height: 34px;
-  transform: translateY(-50%) scale(0.6);
-  background: var(--accent);
-  opacity: 0;
-  pointer-events: none;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' d='M5 13l4 4L19 7'/%3E%3C/svg%3E")
-    center / contain no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' stroke='%23000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round' d='M5 13l4 4L19 7'/%3E%3C/svg%3E")
-    center / contain no-repeat;
-  transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.habit-card.done::after {
-  opacity: 0.12;
-  transform: translateY(-50%) scale(1);
-}
-
 .habit-emoji {
   font-size: 42px;
   line-height: 1;
@@ -823,10 +799,6 @@ body {
   .habit-emoji {
     font-size: 36px;
     width: 44px;
-  }
-
-  .habit-card::after {
-    right: 52px;
   }
 
   .habit-name {
