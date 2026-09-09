@@ -705,10 +705,69 @@ body {
 
 /* ---- Empty state ---- */
 .empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  color: var(--text-soft);
+  max-width: 380px;
+  margin: 24px auto 0;
+  padding: 20px 8px 0;
+  animation: view-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.empty-art {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.empty-art span {
+  font-size: 30px;
+  line-height: 1;
+  filter: drop-shadow(0 4px 8px rgba(21, 30, 45, 0.14));
+  animation: empty-float 3s ease-in-out infinite;
+}
+
+.empty-art span:nth-child(2) {
+  animation-delay: 0.24s;
+}
+.empty-art span:nth-child(3) {
+  animation-delay: 0.48s;
+}
+.empty-art span:nth-child(4) {
+  animation-delay: 0.72s;
+}
+.empty-art span:nth-child(5) {
+  animation-delay: 0.96s;
+}
+
+@keyframes empty-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+
+.empty-title {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.empty-text {
+  margin: 0 0 24px;
   font-size: 15px;
-  padding: 40px 16px;
+  line-height: 1.6;
+  color: var(--text-soft);
+}
+
+.empty-state .add-trigger {
+  margin-bottom: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {

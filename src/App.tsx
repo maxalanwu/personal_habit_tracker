@@ -31,12 +31,21 @@ export default function App() {
       </header>
 
       {habits.length === 0 ? (
-        <>
-          <AddHabitForm onAdd={addHabit} />
-          <p className="empty-state">
-            No habits yet. Add one above to start building a streak.
+        <div className="empty-state">
+          <div className="empty-art" aria-hidden="true">
+            <span>🏃</span>
+            <span>📚</span>
+            <span>🧘</span>
+            <span>💧</span>
+            <span>🌱</span>
+          </div>
+          <h2 className="empty-title">Build your first habit</h2>
+          <p className="empty-text">
+            Pick one small thing you want to do every day. Check it off, and
+            watch the streak grow.
           </p>
-        </>
+          <AddHabitForm onAdd={addHabit} />
+        </div>
       ) : (
         <>
           <div className="view-toggle" role="tablist" aria-label="Choose a view">
