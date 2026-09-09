@@ -22,7 +22,12 @@ export function HabitCard({ habit, firstOfDay, onToggle, onRemove }: Props) {
 
     if (completing) {
       // A short buzz on devices that support it — the "haptic" feel.
-      if (typeof navigator.vibrate === 'function') navigator.vibrate(12);
+      if (
+        typeof navigator.vibrate === 'function' &&
+        navigator.userActivation?.isActive !== false
+      ) {
+        navigator.vibrate(12);
+      }
 
       // A quick physical nudge on the card.
       setPulse(true);
