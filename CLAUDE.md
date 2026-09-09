@@ -53,7 +53,7 @@ Node 裝在 `C:\Program Files\nodejs`。已加進使用者 PATH，新開的終�
 
 - GitHub：https://github.com/maxalanwu/personal_habit_tracker （`main` 分支）
 - 目標平台：**Vercel**，透過 GitHub 整合（vercel.com/new 匯入儲存庫，自動辨識 Vite，零設定，push 即自動部署）
-- 截至最後一次工作階段：程式碼已就緒並推送，**尚未在 Vercel 完成匯入**。
+- 截至最後一次工作階段：程式碼已就緒並推送，已經在 Vercel 完成匯入。
 
 ## 已知問題 / 待辦
 
