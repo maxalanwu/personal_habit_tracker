@@ -1,0 +1,31 @@
+{
+  "name": "Habits",
+  "short_name": "Habits",
+  "description": "A simple daily habit tracker — check things off and watch the streak grow.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f1ede7",
+  "theme_color": "#f1ede7",
+  "icons": [
+    {
+      "src": "/pwa-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
