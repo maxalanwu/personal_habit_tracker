@@ -39,6 +39,7 @@ export default function App() {
               <HabitCard
                 key={habit.id}
                 habit={habit}
+                firstOfDay={doneCount === 0}
                 onToggle={toggleHabitToday}
                 onRemove={removeHabit}
               />
