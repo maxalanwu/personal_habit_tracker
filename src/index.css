@@ -1,16 +1,18 @@
 :root {
-  --bg: #eaeef4;
-  --bg-tint-a: #e7f7ee;
-  --bg-tint-b: #f4f6fa;
-  --surface: #ffffff;
-  --border: #e6e8ef;
-  --text: #1b1e28;
-  --text-soft: #707888;
+  --bg: #f1ede7;
+  --bg-tint-a: #e7f4ea;
+  --bg-tint-b: #f7f3ec;
+  --surface: #fffdfa;
+  --border: #e8e2d8;
+  --text: #221f1c;
+  --text-soft: #6b6259;
   --accent: #12b26b;
-  --accent-strong: #0a9d5c;
+  --accent-strong: #066b3c;
   --accent-grad: linear-gradient(135deg, #22c980 0%, #12b26b 55%, #0aa79a 100%);
-  --accent-soft: #daf5e7;
-  --flame: #f97316;
+  /* Darker green for text-bearing buttons so white labels clear AA. */
+  --accent-btn: linear-gradient(135deg, #0a8350 0%, #076e46 100%);
+  --accent-soft: #dcf1e2;
+  --flame: #e2691a;
   --radius: 20px;
   --radius-sm: 12px;
   --shadow-sm: 0 1px 2px rgba(21, 30, 45, 0.04), 0 4px 14px rgba(21, 30, 45, 0.06),
@@ -25,16 +27,17 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #0d0f14;
-    --bg-tint-a: #10231b;
-    --bg-tint-b: #0d0f14;
-    --surface: #161922;
-    --border: #262b37;
-    --text: #f1f3f6;
-    --text-soft: #99a1b0;
-    --accent: #22c980;
-    --accent-strong: #1bb673;
-    --accent-soft: #16351f;
+    --bg: #14110d;
+    --bg-tint-a: #14261c;
+    --bg-tint-b: #14110d;
+    --surface: #1e1a15;
+    --border: #322c24;
+    --text: #f4f1ec;
+    --text-soft: #a9a096;
+    --accent: #2fd08a;
+    --accent-strong: #4bdb9c;
+    --accent-btn: linear-gradient(135deg, #16a866 0%, #0f8f57 100%);
+    --accent-soft: #1c3a26;
     --flame: #fb923c;
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 6px 18px rgba(0, 0, 0, 0.38),
       0 14px 36px rgba(0, 0, 0, 0.34);
@@ -53,6 +56,24 @@ button {
   touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
+}
+
+:focus-visible {
+  outline: 2.5px solid var(--accent-strong);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 body {
@@ -194,7 +215,7 @@ body {
   font-size: 16px;
   font-weight: 750;
   color: #fff;
-  background: var(--accent-grad);
+  background: var(--accent-btn);
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -346,7 +367,7 @@ body {
   font-size: 16px;
   font-weight: 750;
   color: #fff;
-  background: var(--accent-grad);
+  background: var(--accent-btn);
   border: none;
   border-radius: var(--radius-sm);
   cursor: pointer;
@@ -542,7 +563,7 @@ body {
 
 .habit-check.checked {
   border-color: transparent;
-  background: var(--accent-grad);
+  background: var(--accent-btn);
   animation: check-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -770,6 +791,137 @@ body {
 
 .empty-state .add-trigger {
   margin-bottom: 0;
+}
+
+/* ---- App reveal after the boot skeleton ---- */
+.app-enter {
+  animation: app-enter 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes app-enter {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+/* ---- Haptic-style nudge when a habit is checked ---- */
+.habit-card.pulse {
+  animation: haptic-pulse 0.44s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes haptic-pulse {
+  0% {
+    transform: scale(1);
+  }
+  28% {
+    transform: scale(1.015);
+  }
+  55% {
+    transform: scale(0.994);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ---- Loading state during view transitions ---- */
+.view-stage.loading {
+  opacity: 0.5;
+  transition: opacity 0.12s ease;
+}
+
+.view-stage.loading::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    rgba(18, 178, 107, 0.08) 50%,
+    transparent 80%
+  );
+  background-size: 220% 100%;
+  animation: sweep 0.9s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes sweep {
+  from {
+    background-position: 180% 0;
+  }
+  to {
+    background-position: -80% 0;
+  }
+}
+
+/* ---- Boot skeleton ---- */
+.skeleton-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 70%
+  );
+  background-size: 220% 100%;
+  animation: sweep 1.3s ease-in-out infinite;
+}
+
+@media (prefers-color-scheme: dark) {
+  .skeleton::after {
+    background-image: linear-gradient(
+      100deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.09) 50%,
+      transparent 70%
+    );
+  }
+}
+
+.skeleton-line {
+  height: 14px;
+}
+.sk-date {
+  width: 40%;
+  margin-bottom: 14px;
+}
+.sk-title {
+  width: 58%;
+  height: 38px;
+  margin-bottom: 12px;
+}
+.sk-motto {
+  width: 70%;
+  margin-bottom: 34px;
+}
+.sk-toggle {
+  height: 48px;
+  margin-bottom: 24px;
+}
+.sk-trigger {
+  height: 52px;
+  margin-bottom: 24px;
+}
+.sk-card {
+  height: 78px;
+  border-radius: var(--radius);
+  margin-bottom: 14px;
 }
 
 /* ---- Mobile (primary target) ---- */

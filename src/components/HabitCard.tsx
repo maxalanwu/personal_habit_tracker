@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { confettiBurst } from '../lib/confetti';
 import { currentStreak } from '../lib/dates';
 import { isDoneToday, type Habit } from '../lib/habits';
@@ -15,18 +15,33 @@ export function HabitCard({ habit, firstOfDay, onToggle, onRemove }: Props) {
   const done = isDoneToday(habit);
   const streak = currentStreak(habit.completions);
   const checkRef = useRef<HTMLButtonElement>(null);
+  const [pulse, setPulse] = useState(false);
 
   function handleToggle() {
-    // Completing (not un-checking) and it's the day's first — celebrate.
-    if (!done && firstOfDay && checkRef.current) {
-      const r = checkRef.current.getBoundingClientRect();
-      confettiBurst(r.left + r.width / 2, r.top + r.height / 2);
+    const completing = !done;
+
+    if (completing) {
+      // A short buzz on devices that support it — the "haptic" feel.
+      if (typeof navigator.vibrate === 'function') navigator.vibrate(12);
+
+      // A quick physical nudge on the card.
+      setPulse(true);
+      window.setTimeout(() => setPulse(false), 450);
+
+      // First completion of the day earns a little confetti.
+      if (firstOfDay && checkRef.current) {
+        const r = checkRef.current.getBoundingClientRect();
+        confettiBurst(r.left + r.width / 2, r.top + r.height / 2);
+      }
     }
+
     onToggle(habit.id);
   }
 
   return (
-    <li className={`habit-card${done ? ' done' : ''}`}>
+    <li
+      className={`habit-card${done ? ' done' : ''}${pulse ? ' pulse' : ''}`}
+    >
       <span className="habit-emoji" aria-hidden="true">
         {habit.emoji}
       </span>
@@ -53,7 +68,11 @@ export function HabitCard({ habit, firstOfDay, onToggle, onRemove }: Props) {
         className={`habit-check${done ? ' checked' : ''}`}
         onClick={handleToggle}
         aria-pressed={done}
-        aria-label={`Mark ${habit.name} done for today`}
+        aria-label={
+          done
+            ? `${habit.name}: done today. Tap to undo.`
+            : `Mark ${habit.name} done for today`
+        }
       >
         <span className="habit-check-burst" aria-hidden="true" />
         <svg

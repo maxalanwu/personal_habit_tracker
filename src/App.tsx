@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AddHabitForm } from './components/AddHabitForm';
 import { HabitCard } from './components/HabitCard';
+import { Skeleton } from './components/Skeleton';
 import { WeeklyGrid } from './components/WeeklyGrid';
 import { useHabits } from './hooks/useHabits';
 import { isDoneToday } from './lib/habits';
@@ -11,6 +12,23 @@ type View = 'today' | 'week';
 export default function App() {
   const { habits, addHabit, removeHabit, toggleHabitToday } = useHabits();
   const [view, setView] = useState<View>('today');
+  const [pending, setPending] = useState(false);
+  const [booted, setBooted] = useState(false);
+
+  // Brief skeleton on first paint so the app resolves in rather than snapping.
+  useEffect(() => {
+    const id = window.setTimeout(() => setBooted(true), 320);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  function changeView(next: View) {
+    if (next === view || pending) return;
+    setPending(true);
+    window.setTimeout(() => {
+      setView(next);
+      setPending(false);
+    }, 150);
+  }
 
   const doneCount = habits.filter(isDoneToday).length;
   const today = new Date().toLocaleDateString(undefined, {
@@ -20,14 +38,22 @@ export default function App() {
   });
   const motto = dailyMessage();
 
+  if (!booted) {
+    return (
+      <div className="app">
+        <Skeleton />
+      </div>
+    );
+  }
+
   return (
-    <div className="app">
+    <div className="app app-enter">
       <header className="app-header">
         <p className="app-date">{today}</p>
         <h1 className="app-title">Habits</h1>
         <p className="app-motto">{motto}</p>
         {habits.length > 0 && (
-          <p className="app-progress">
+          <p className="app-progress" aria-live="polite">
             {doneCount} of {habits.length} done today
           </p>
         )}
@@ -51,29 +77,30 @@ export default function App() {
         </div>
       ) : (
         <>
-          <div className="view-toggle" role="tablist" aria-label="Choose a view">
+          <div className="view-toggle" role="group" aria-label="Choose a view">
             <span className={`view-toggle-thumb ${view}`} aria-hidden="true" />
             <button
               type="button"
-              role="tab"
-              aria-selected={view === 'today'}
+              aria-pressed={view === 'today'}
               className={`view-toggle-btn${view === 'today' ? ' active' : ''}`}
-              onClick={() => setView('today')}
+              onClick={() => changeView('today')}
             >
               Today
             </button>
             <button
               type="button"
-              role="tab"
-              aria-selected={view === 'week'}
+              aria-pressed={view === 'week'}
               className={`view-toggle-btn${view === 'week' ? ' active' : ''}`}
-              onClick={() => setView('week')}
+              onClick={() => changeView('week')}
             >
               Week
             </button>
           </div>
 
-          <div className="view-stage">
+          <div
+            className={`view-stage${pending ? ' loading' : ''}`}
+            aria-busy={pending}
+          >
             {view === 'today' ? (
               <div className="view-panel" key="today">
                 <AddHabitForm onAdd={addHabit} />
