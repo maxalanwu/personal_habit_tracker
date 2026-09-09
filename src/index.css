@@ -104,10 +104,17 @@ body {
   color: transparent;
 }
 
+.app-motto {
+  margin: 8px 0 0;
+  font-size: 14px;
+  font-weight: 450;
+  color: var(--text-soft);
+}
+
 .app-progress {
-  margin: 10px 0 0;
-  font-size: 15px;
-  font-weight: 500;
+  margin: 4px 0 0;
+  font-size: 14px;
+  font-weight: 600;
   color: var(--text-soft);
 }
 

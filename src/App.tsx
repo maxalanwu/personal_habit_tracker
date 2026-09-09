@@ -4,6 +4,7 @@ import { HabitCard } from './components/HabitCard';
 import { WeeklyGrid } from './components/WeeklyGrid';
 import { useHabits } from './hooks/useHabits';
 import { isDoneToday } from './lib/habits';
+import { dailyMessage } from './lib/motivation';
 
 type View = 'today' | 'week';
 
@@ -17,12 +18,14 @@ export default function App() {
     month: 'long',
     day: 'numeric',
   });
+  const motto = dailyMessage();
 
   return (
     <div className="app">
       <header className="app-header">
         <p className="app-date">{today}</p>
         <h1 className="app-title">Habits</h1>
+        <p className="app-motto">{motto}</p>
         {habits.length > 0 && (
           <p className="app-progress">
             {doneCount} of {habits.length} done today
